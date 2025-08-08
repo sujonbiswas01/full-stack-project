@@ -31,7 +31,6 @@ const HeroCharacter = (props:any) => (
     />
     <foreignObject x={25.9958} y={299} width={282} height={160}>
       <div
-        xmlns="http://www.w3.org/1999/xhtml"
         style={{
           backdropFilter: "blur(5px)",
           clipPath: "url(#bgblur_0_0_16629_clip_path)",
