@@ -45,3 +45,24 @@ body {
   background: rgba(0,0,0,0.75);
   z-index: 1;
 }
+
+.gradient-input{
+  background: linear-gradient(
+    144.39deg,
+    rgba(255,255,255,0.4) - 278.56%,
+    rgba(109,109,109,0.4) - 78.47%,
+    rgba(17,16,29,0.4) - 122.61%,);
+    border-radius: 8px;
+    padding: 16px;
+    color: white;
+    outline: none;
+}
+.gradient-input::placeholder{
+  color: white;
+}
+
+.scroll-hidden{
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+

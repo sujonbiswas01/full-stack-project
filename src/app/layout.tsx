@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
+import { DM_Sans, Geist, Geist_Mono, Inter, Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/shared/widgets/header/header";
+import Footer from "@/shared/modules/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +19,17 @@ const inter = Inter({
   subsets:["latin"],
 });
 
+const plus_jakarta_sans = Plus_Jakarta_Sans({
+  variable:"--font-plus_jakarta-sans",
+  subsets:["latin"],
+  weight:["200","300","400","500","600","700","800"]
+});
+
+const dm_sams = DM_Sans({
+  variable:"--font-dm-sans",
+  subsets:["latin"],
+  weight:["100","200","300","400","500","600","700","800","900"]
+})
 const popins = Poppins({
   variable:"--font-popins",
   subsets:["latin"],
@@ -37,10 +49,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${inter.variable} ${popins.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${inter.variable} ${plus_jakarta_sans.variable} ${dm_sams.variable} ${popins.variable} ${geistMono.variable} antialiased`}
       >
         <Header/> 
         {children}
+        <Footer/>
+        
       </body>
     </html>
   );
