@@ -29,7 +29,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.bg-hero-gradiant{
+.bg-hero-gradiant,.bg-form-gradiant{
   background-image: url('https://res.cloudinary.com/dkg6jv4l0/image/upload/v1741463740/oyc7wnuosrnwjwhrark3.jpg');
   background-position: center;
   background-repeat: no-repeat;
@@ -46,6 +46,19 @@ body {
   z-index: 1;
 }
 
+.bg-form-gradiant::before{
+   content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1;
+  border-radius: 16px;
+
+
+}
 .gradient-input{
   background: linear-gradient(
     144.39deg,

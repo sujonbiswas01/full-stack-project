@@ -1,8 +1,10 @@
+
 import type { Metadata } from "next";
 import { DM_Sans, Geist, Geist_Mono, Inter, Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/shared/widgets/header/header";
 import Footer from "@/shared/modules/footer";
+import Provider from "@/config/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,7 +15,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
 const inter = Inter({
   variable:"--font-inter",
   subsets:["latin"],
@@ -51,10 +52,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${inter.variable} ${plus_jakarta_sans.variable} ${dm_sams.variable} ${popins.variable} ${geistMono.variable} antialiased`}
       >
-        <Header/> 
-        {children}
-        <Footer/>
-        
+        <Provider>
+          <Header />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   );
