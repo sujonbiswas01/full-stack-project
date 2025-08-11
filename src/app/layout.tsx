@@ -53,9 +53,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${inter.variable} ${plus_jakarta_sans.variable} ${dm_sams.variable} ${popins.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
-          <Header />
-          {children}
-          <Footer />
+           {children}
         </Provider>
       </body>
     </html>

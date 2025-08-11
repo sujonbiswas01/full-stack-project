@@ -2,6 +2,8 @@ import prisma from "@/utils/prisma";
 import { compare } from "bcryptjs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+// import GitHubProvider from "next-auth/providers/github";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -14,10 +16,10 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "password", type: "password" },
       },
+
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) {
-          console.log("missing  email or password");
-          throw new Error("Email password require");
+          throw new Error("Email and password are required!");
         }
 
         const user = await prisma.users.findUnique({
@@ -33,34 +35,69 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Email or Password isn't correct!");
           }
         }
+
         return { id: user.id, name: user.userName, email: user.email };
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+
+  //   GitHubProvider({
+  //   clientId: process.env.GITHUB_ID,
+  //   clientSecret: process.env.GITHUB_SECRET
+  // })
   ],
+
+
+
+
   callbacks: {
-    async jwt({ token, user }) {
-      if(user){
-        token.id = user.id;
-   
+    async jwt({ token, user, account, profile }) {
+      if (account?.provider === "google" || "facebook") {
+        const email = token?.email ?? profile?.email;
+
+        const existingUser = await prisma.users.findUnique({
+          where: {
+            email,
+          },
+        });
+
+        if (!existingUser && profile?.email) {
+          const newUser = await prisma.users.create({
+            data: {
+              email: profile?.email,
+              userName: profile?.name || profile?.email?.split("@")[0],
+            },
+          });
+
+          token.id = newUser.id;
+        } else {
+          token.id = existingUser?.id;
+        }
       }
-      return token
+      
+      if (user) {
+        token.id = user.id ?? profile?.sub;
+      }
+      return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      console.log("JWT callback required!", { session, token });
       if (session.user) {
         session.user.id = token.id as string;
       }
       return session;
     },
   },
-
-  pages:{
-        signIn:"/login"
-    },
+  pages: {
+    signIn: "/login",
+  },
   secret: process.env.NEXTAUTH_SECRET as string,
-  session:{
-    strategy:"jwt"
-  }
+  session: {
+    strategy: "jwt",
+  },
 };
+
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
